@@ -1,4 +1,4 @@
-import { CalendarCheck, CalendarClock, Sparkles } from 'lucide-react';
+import { Bell, CalendarCheck, CalendarClock, Sparkles } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import EventCard from '../components/EventCard.jsx';
 import { useAuth } from '../context/AuthContext.jsx';
@@ -72,6 +72,26 @@ export default function DashboardPage() {
           <strong>{dashboard.stats.createdCount}</strong>
           <span>Created</span>
         </div>
+        <div className="stat-tile">
+          <Bell size={22} aria-hidden="true" />
+          <strong>{dashboard.stats.unreadNotifications}</strong>
+          <span>Unread alerts</span>
+        </div>
+      </section>
+      <section className="dashboard-section">
+        <h2>Latest notifications</h2>
+        {dashboard.notifications.length === 0 ? (
+          <div className="empty-state compact-empty">Notifications will appear here.</div>
+        ) : (
+          <div className="notification-list compact-list">
+            {dashboard.notifications.map((notification) => (
+              <article className={notification.is_read ? 'notification-card' : 'notification-card unread'} key={notification.id}>
+                <Bell size={18} aria-hidden="true" />
+                <p>{notification.message}</p>
+              </article>
+            ))}
+          </div>
+        )}
       </section>
       <EventSection
         title="Joined events"

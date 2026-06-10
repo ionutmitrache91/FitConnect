@@ -42,6 +42,9 @@ export async function runMigrations(db) {
       created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
       FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
     );
+
+    CREATE INDEX IF NOT EXISTS idx_events_date_time ON events(date, time);
+    CREATE INDEX IF NOT EXISTS idx_rsvps_user_status ON rsvps(user_id, status);
+    CREATE INDEX IF NOT EXISTS idx_notifications_user_read ON notifications(user_id, is_read);
   `);
 }
-
