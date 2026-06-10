@@ -3,7 +3,7 @@ import { NavLink, Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext.jsx';
 
 const navItems = [
-  { to: '/events', label: 'Events', icon: Activity },
+  { to: '/events', label: 'Events', icon: Activity, public: true },
   { to: '/dashboard', label: 'Dashboard', icon: LayoutDashboard },
   { to: '/create-event', label: 'Create', icon: CalendarPlus },
   { to: '/notifications', label: 'Alerts', icon: Bell }
@@ -20,8 +20,9 @@ export default function Navbar() {
       </Link>
 
       <nav className="nav-links" aria-label="Primary navigation">
-        {user &&
-          navItems.map((item) => {
+        {navItems
+          .filter((item) => item.public || user)
+          .map((item) => {
             const Icon = item.icon;
 
             return (
@@ -59,4 +60,3 @@ export default function Navbar() {
     </header>
   );
 }
-

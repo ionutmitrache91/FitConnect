@@ -32,3 +32,34 @@ export function validateLogin(body) {
   return null;
 }
 
+export function validateEventPayload(body) {
+  const requiredFields = ['title', 'description', 'date', 'time', 'location', 'category'];
+
+  for (const field of requiredFields) {
+    if (!body?.[field] || String(body[field]).trim().length === 0) {
+      return `${field.replace('_', ' ')} is required.`;
+    }
+  }
+
+  if (String(body.title).trim().length < 4) {
+    return 'Title must be at least 4 characters.';
+  }
+
+  if (String(body.description).trim().length < 12) {
+    return 'Description must be at least 12 characters.';
+  }
+
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(body.date)) {
+    return 'Date must use YYYY-MM-DD format.';
+  }
+
+  if (!/^\d{2}:\d{2}$/.test(body.time)) {
+    return 'Time must use HH:MM format.';
+  }
+
+  if (body.image_url && !/^https?:\/\//i.test(String(body.image_url).trim())) {
+    return 'Event image URL must start with http:// or https://.';
+  }
+
+  return null;
+}

@@ -1,7 +1,25 @@
 import { ArrowRight, CalendarCheck, MapPin, Sparkles } from 'lucide-react';
+import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+import EventCard from '../components/EventCard.jsx';
+import { api } from '../services/api.js';
 
 export default function HomePage() {
+  const [featuredEvents, setFeaturedEvents] = useState([]);
+
+  useEffect(() => {
+    async function loadFeaturedEvents() {
+      try {
+        const { data } = await api.get('/events');
+        setFeaturedEvents(data.events.slice(0, 3));
+      } catch {
+        setFeaturedEvents([]);
+      }
+    }
+
+    loadFeaturedEvents();
+  }, []);
+
   return (
     <main>
       <section className="hero">
@@ -39,7 +57,23 @@ export default function HomePage() {
           <span>Join, cancel, and track events from your dashboard.</span>
         </div>
       </section>
+
+      <section className="featured-section">
+        <div className="section-heading split-heading">
+          <div>
+            <p className="eyebrow dark">Featured events</p>
+            <h1>Move with your community</h1>
+          </div>
+          <Link className="button ghost" to="/events">
+            Explore all
+          </Link>
+        </div>
+        <div className="event-grid compact">
+          {featuredEvents.map((event) => (
+            <EventCard key={event.id} event={event} />
+          ))}
+        </div>
+      </section>
     </main>
   );
 }
-
