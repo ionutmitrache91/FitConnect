@@ -1,0 +1,10 @@
+node_modules/
+dist/
+coverage/
+.env
+*.log
+backend/database/*.sqlite
+backend/database/*.sqlite-*
+backend/test-database.sqlite
+frontend/.vite/
+
