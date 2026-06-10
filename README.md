@@ -81,6 +81,10 @@ npm run dev:frontend
 
 Open the Vite URL shown in the terminal, usually `http://localhost:5173`.
 
+## Deployment
+
+Use Node.js 20 for CI and deployment. See [docs/DEPLOYMENT.md](docs/DEPLOYMENT.md) for environment variables, build commands, and release checks.
+
 ## Database Setup
 
 The backend creates and migrates SQLite automatically on startup. By default the database file is:
@@ -153,4 +157,3 @@ The repository history is organized around the requested Scrum-style sprint comm
 5. Add notification system and UI improvements
 6. Add testing bug fixes and project documentation
 7. Final MVP release and deployment preparation
-
