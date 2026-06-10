@@ -6,78 +6,167 @@ function futureDate(daysFromNow) {
   return new Date(Date.now() + daysFromNow * dayMs).toISOString().slice(0, 10);
 }
 
+// European sample users
+const sampleUsers = [
+  {
+    name: 'Anna Schmidt',
+    email: 'anna.schmidt@example.de',
+    city: 'Berlin',
+    country: 'Germany'
+  },
+  {
+    name: 'Luc Dupont',
+    email: 'luc.dupont@example.fr',
+    city: 'Paris',
+    country: 'France'
+  },
+  {
+    name: 'Marco Rossi',
+    email: 'marco.rossi@example.it',
+    city: 'Milan',
+    country: 'Italy'
+  },
+  {
+    name: 'Elena García',
+    email: 'elena.garcia@example.es',
+    city: 'Barcelona',
+    country: 'Spain'
+  },
+  {
+    name: 'Sofia Müller',
+    email: 'sofia.muller@example.ch',
+    city: 'Zurich',
+    country: 'Switzerland'
+  },
+  {
+    name: 'Oliver Jensen',
+    email: 'oliver.jensen@example.dk',
+    city: 'Copenhagen',
+    country: 'Denmark'
+  }
+];
+
+// European fitness events with European cities and venues
 const sampleEvents = [
   {
-    title: 'Morning Running Club',
-    description: 'A steady-paced community run through the park with warmups, route options, and post-run coffee nearby.',
+    title: 'Morgenjogging im Tiergarten',
+    description: 'Ein lockeres Lauftempo durch Berlins grüne Lunge mit Aufwärm- und Dehnübungen. Perfekt für Anfänger und Fortgeschrittene.',
     dateOffset: 4,
     time: '07:00',
-    location: 'Central Park, Main Gate',
+    location: 'Tiergarten, Berlin, Germany',
     category: 'Running',
+    creatorEmail: 'anna.schmidt@example.de',
     image_url: 'https://images.unsplash.com/photo-1552674605-db6ffd4facb5?auto=format&fit=crop&w=1200&q=80'
   },
   {
-    title: 'Weekend Yoga Session',
-    description: 'An energizing outdoor yoga class focused on mobility, breathing, and balance for all experience levels.',
-    dateOffset: 7,
+    title: 'Yoga au Parc du Luxembourg',
+    description: 'Une séance de yoga revigorant au cœur de Paris, axée sur la mobilité et l\'équilibre pour tous les niveaux.',
+    dateOffset: 5,
     time: '09:30',
-    location: 'Riverside Wellness Lawn',
+    location: 'Parc du Luxembourg, Paris, France',
     category: 'Yoga',
+    creatorEmail: 'luc.dupont@example.fr',
     image_url: 'https://images.unsplash.com/photo-1506126613408-eca07ce68773?auto=format&fit=crop&w=1200&q=80'
   },
   {
-    title: 'Mountain Hiking Group',
-    description: 'A guided half-day hike with scenic viewpoints, hydration stops, and a friendly pace for active beginners.',
-    dateOffset: 11,
+    title: 'Escursionismo Alpi - Gruppo principianti',
+    description: 'Una mezza giornata di trekking guidato con punti panoramici, soste di idratazione e ritmo adatto ai principianti attivi.',
+    dateOffset: 8,
     time: '08:15',
-    location: 'Blue Ridge Trailhead',
+    location: 'Rifugio Auronzo, Dolomiti, Italy',
     category: 'Hiking',
+    creatorEmail: 'marco.rossi@example.it',
     image_url: 'https://images.unsplash.com/photo-1551632811-561732d1e306?auto=format&fit=crop&w=1200&q=80'
   },
   {
-    title: 'Community Cycling Event',
-    description: 'A social city ride using protected lanes and low-traffic roads, ending with a smoothie stop.',
-    dateOffset: 13,
+    title: 'Paseo en Bici por Barcelona',
+    description: 'Una ruta social por la ciudad utilizando carriles protegidos, terminando en un smoothie bar local.',
+    dateOffset: 10,
     time: '10:00',
-    location: 'City Hall Plaza',
+    location: 'Plaza Reial, Barcelona, Spain',
     category: 'Cycling',
+    creatorEmail: 'elena.garcia@example.es',
     image_url: 'https://images.unsplash.com/photo-1485965120184-e220f721d03e?auto=format&fit=crop&w=1200&q=80'
   },
   {
-    title: 'Sunset Beach Run',
-    description: 'A relaxed sand-and-boardwalk run with sunset views, cool-down stretches, and optional pace groups.',
-    dateOffset: 15,
-    time: '18:45',
-    location: 'South Beach Pier',
-    category: 'Running',
-    image_url: 'https://images.unsplash.com/photo-1502904550040-7534597429ae?auto=format&fit=crop&w=1200&q=80'
-  },
-  {
-    title: 'CrossFit Beginners Session',
-    description: 'A coach-led intro workout covering safe movement, scaled exercises, and a supportive first-timer format.',
-    dateOffset: 17,
+    title: 'CrossFit Anfänger-Session',
+    description: 'Eine von Trainern geleitete Einführungsveranstaltung mit sicheren Bewegungen, skalierbaren Übungen und unterstützender Atmosphäre.',
+    dateOffset: 12,
     time: '17:30',
-    location: 'Iron Yard Training Studio',
+    location: 'Iron Yard Studio, Zurich, Switzerland',
     category: 'Bootcamp',
+    creatorEmail: 'sofia.muller@example.ch',
     image_url: 'https://images.unsplash.com/photo-1534438327276-14e5300c3a48?auto=format&fit=crop&w=1200&q=80'
   },
   {
-    title: 'Meditation and Wellness Meetup',
-    description: 'A mindful evening with guided meditation, journaling prompts, and conversation around healthy routines.',
-    dateOffset: 19,
+    title: 'Løbegruppe ved Tåsinge Strand',
+    description: 'En afslappet løbetur langs stranden med solnedgangsudsigthed, afslutning med stræk og valgfrit tempo.',
+    dateOffset: 14,
+    time: '18:45',
+    location: 'Tåsinge Strand, Copenhagen, Denmark',
+    category: 'Running',
+    creatorEmail: 'oliver.jensen@example.dk',
+    image_url: 'https://images.unsplash.com/photo-1502904550040-7534597429ae?auto=format&fit=crop&w=1200&q=80'
+  },
+  {
+    title: 'Meditation und Wellness München',
+    description: 'Ein achtsamer Abend mit geführter Meditation, Tagebuchschreiben und Gesprächen über gesunde Gewohnheiten.',
+    dateOffset: 16,
     time: '19:00',
-    location: 'Lotus Community Center',
+    location: 'Yoga & Meditation Zentrum, Munich, Germany',
     category: 'Wellness',
+    creatorEmail: 'anna.schmidt@example.de',
     image_url: 'https://images.unsplash.com/photo-1499209974431-9dddcece7f88?auto=format&fit=crop&w=1200&q=80'
   },
   {
-    title: 'Fitness Bootcamp',
-    description: 'A high-energy circuit session combining strength, cardio, and teamwork in a scalable outdoor format.',
-    dateOffset: 22,
+    title: 'Bootcamp à Strasbourg',
+    description: 'Une séance circuit haute-énergie combinant force, cardio et travail d\'équipe dans un format extensible en plein air.',
+    dateOffset: 18,
     time: '06:30',
-    location: 'Harbor Sports Field',
+    location: 'Parc de l\'Orangerie, Strasbourg, France',
     category: 'Bootcamp',
+    creatorEmail: 'luc.dupont@example.fr',
     image_url: DEFAULT_EVENT_IMAGE
+  },
+  {
+    title: 'Trail Running Toscana',
+    description: 'Una corsa su sentieri affascinanti attraverso le colline toscane con pause rinfrescanti e viste mozzafiato.',
+    dateOffset: 20,
+    time: '07:30',
+    location: 'Val d\'Orcia, Tuscany, Italy',
+    category: 'Running',
+    creatorEmail: 'marco.rossi@example.it',
+    image_url: 'https://images.unsplash.com/photo-1552674605-db6ffd4facb5?auto=format&fit=crop&w=1200&q=80'
+  },
+  {
+    title: 'Pilates al Parque Güell',
+    description: 'Clases de pilates al aire libre con vistas a la ciudad, enfoque en el núcleo y la flexibilidad.',
+    dateOffset: 22,
+    time: '10:00',
+    location: 'Parque Güell, Barcelona, Spain',
+    category: 'Wellness',
+    creatorEmail: 'elena.garcia@example.es',
+    image_url: 'https://images.unsplash.com/photo-1506126613408-eca07ce68773?auto=format&fit=crop&w=1200&q=80'
+  },
+  {
+    title: 'Windsurfing Gruppe Genfer See',
+    description: 'Windsurfing-Training mit Instruktoren für Anfänger und Fortgeschrittene, Sicherheitsausrüstung inbegriffen.',
+    dateOffset: 25,
+    time: '09:00',
+    location: 'Lac Léman, Geneva, Switzerland',
+    category: 'Water Sports',
+    creatorEmail: 'sofia.muller@example.ch',
+    image_url: 'https://images.unsplash.com/photo-1518525677915-4b400ca199e7?auto=format&fit=crop&w=1200&q=80'
+  },
+  {
+    title: 'Cykeltur gennem København',
+    description: 'En socialt cykeltur gennem Københavns varme veje med stop ved lokale kaffe barer.',
+    dateOffset: 27,
+    time: '14:00',
+    location: 'City Hall Square, Copenhagen, Denmark',
+    category: 'Cycling',
+    creatorEmail: 'oliver.jensen@example.dk',
+    image_url: 'https://images.unsplash.com/photo-1485965120184-e220f721d03e?auto=format&fit=crop&w=1200&q=80'
   }
 ];
 
@@ -88,21 +177,31 @@ export async function seedEvents(db) {
     return;
   }
 
-  const demoUser = await db.get('SELECT id FROM users WHERE email = ?', 'demo@fitconnect.local');
-  let creatorId = demoUser?.id;
+  // Create demo users
+  const userIds = {};
+  const passwordHash = '$2b$10$uR9LEnH8N9CUXFc14i/ZrOlbWDDvPN03p/4r2SOo3XLefoQR/YTQq'; // demo password
 
-  if (!creatorId) {
-    const created = await db.run(
-      `INSERT INTO users (name, email, password_hash)
-       VALUES (?, ?, ?)`,
-      'FitConnect Demo Team',
-      'demo@fitconnect.local',
-      '$2b$10$uR9LEnH8N9CUXFc14i/ZrOlbWDDvPN03p/4r2SOo3XLefoQR/YTQq'
-    );
-    creatorId = created.lastID;
+  for (const user of sampleUsers) {
+    const existing = await db.get('SELECT id FROM users WHERE email = ?', user.email);
+    
+    if (existing) {
+      userIds[user.email] = existing.id;
+    } else {
+      const result = await db.run(
+        `INSERT INTO users (name, email, password_hash)
+         VALUES (?, ?, ?)`,
+        user.name,
+        user.email,
+        passwordHash
+      );
+      userIds[user.email] = result.lastID;
+    }
   }
 
+  // Insert events
   for (const event of sampleEvents) {
+    const creatorId = userIds[event.creatorEmail];
+    
     await db.run(
       `INSERT INTO events (title, description, date, time, location, category, image_url, creator_id)
        VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
