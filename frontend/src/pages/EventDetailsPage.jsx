@@ -1,4 +1,4 @@
-import { CalendarDays, MapPin, Pencil, UserRound, Users } from 'lucide-react';
+import { CalendarDays, CheckCircle2, LogIn, MapPin, Pencil, UserRound, Users, XCircle } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext.jsx';
@@ -11,6 +11,8 @@ export default function EventDetailsPage() {
   const [event, setEvent] = useState(null);
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(true);
+  const [rsvpMessage, setRsvpMessage] = useState('');
+  const [isRsvpLoading, setIsRsvpLoading] = useState(false);
 
   useEffect(() => {
     async function loadEvent() {
@@ -31,11 +33,27 @@ export default function EventDetailsPage() {
     return <div className="page-state">Loading event...</div>;
   }
 
-  if (error) {
+  if (error && !event) {
     return <div className="page-state error-state">{error}</div>;
   }
 
   const canEdit = user?.id === event.creator_id;
+
+  async function updateRsvp(action) {
+    setIsRsvpLoading(true);
+    setRsvpMessage('');
+    setError('');
+
+    try {
+      const { data } = await api.post(`/rsvp/${action}`, { eventId: event.id });
+      setEvent(data.event);
+      setRsvpMessage(data.message);
+    } catch (apiError) {
+      setError(getApiErrorMessage(apiError));
+    } finally {
+      setIsRsvpLoading(false);
+    }
+  }
 
   return (
     <main className="event-detail">
@@ -72,8 +90,29 @@ export default function EventDetailsPage() {
           </span>
         </div>
         <p className="event-description">{event.description}</p>
+        <div className="rsvp-panel">
+          {user ? (
+            Boolean(event.joined_by_user) ? (
+              <button className="button danger" type="button" disabled={isRsvpLoading} onClick={() => updateRsvp('cancel')}>
+                <XCircle size={18} aria-hidden="true" />
+                <span>{isRsvpLoading ? 'Updating...' : 'Cancel RSVP'}</span>
+              </button>
+            ) : (
+              <button className="button primary" type="button" disabled={isRsvpLoading} onClick={() => updateRsvp('join')}>
+                <CheckCircle2 size={18} aria-hidden="true" />
+                <span>{isRsvpLoading ? 'Joining...' : 'Join event'}</span>
+              </button>
+            )
+          ) : (
+            <Link className="button primary" to="/login">
+              <LogIn size={18} aria-hidden="true" />
+              <span>Login to RSVP</span>
+            </Link>
+          )}
+          {rsvpMessage && <span className="inline-success">{rsvpMessage}</span>}
+          {error && <span className="inline-error">{error}</span>}
+        </div>
       </section>
     </main>
   );
 }
-

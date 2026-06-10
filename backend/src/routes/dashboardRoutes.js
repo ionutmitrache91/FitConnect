@@ -1,10 +1,10 @@
 import { Router } from 'express';
+import { getDashboard } from '../controllers/dashboardController.js';
+import { asyncHandler } from '../middleware/asyncHandler.js';
+import { requireAuth } from '../middleware/auth.js';
 
 const router = Router();
 
-router.get('/', (_req, res) => {
-  res.status(501).json({ message: 'Dashboard is not implemented yet.' });
-});
+router.get('/', requireAuth, asyncHandler(getDashboard));
 
 export default router;
-

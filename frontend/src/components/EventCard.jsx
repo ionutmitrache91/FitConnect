@@ -11,10 +11,13 @@ export default function EventCard({ event, showEdit = false }) {
       <div className="event-card-body">
         <div className="event-card-topline">
           <span className="pill">{event.category}</span>
-          <span className="attendee-count">
-            <Users size={16} aria-hidden="true" />
-            {event.rsvp_count || 0}
-          </span>
+          <div className="event-card-badges">
+            {Boolean(event.joined_by_user) && <span className="joined-badge">Joined</span>}
+            <span className="attendee-count">
+              <Users size={16} aria-hidden="true" />
+              {event.rsvp_count || 0}
+            </span>
+          </div>
         </div>
         <h2>
           <Link to={`/events/${event.id}`}>{event.title}</Link>
@@ -44,4 +47,3 @@ export default function EventCard({ event, showEdit = false }) {
     </article>
   );
 }
-

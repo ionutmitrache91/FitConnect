@@ -37,6 +37,50 @@ export async function listEvents({ userId } = {}) {
   return db.all(`${eventSelect(userId)} ${eventGroupOrder()}`);
 }
 
+export async function listUpcomingEvents({ userId } = {}) {
+  const db = await getDb();
+  const today = new Date().toISOString().slice(0, 10);
+
+  return db.all(
+    `
+      ${eventSelect(userId)}
+      WHERE e.date >= ?
+      ${eventGroupOrder()}
+      LIMIT 6
+    `,
+    today
+  );
+}
+
+export async function listJoinedEvents(userId) {
+  const db = await getDb();
+
+  return db.all(
+    `
+      ${eventSelect(userId)}
+      JOIN rsvps joined_by_me
+        ON joined_by_me.event_id = e.id
+        AND joined_by_me.user_id = ?
+        AND joined_by_me.status = 'joined'
+      ${eventGroupOrder()}
+    `,
+    userId
+  );
+}
+
+export async function listCreatedEvents(userId) {
+  const db = await getDb();
+
+  return db.all(
+    `
+      ${eventSelect(userId)}
+      WHERE e.creator_id = ?
+      ${eventGroupOrder()}
+    `,
+    userId
+  );
+}
+
 export async function findEventById(id, { userId } = {}) {
   const db = await getDb();
   return db.get(
@@ -90,4 +134,3 @@ export async function deleteEventById(id) {
   const db = await getDb();
   await db.run('DELETE FROM events WHERE id = ?', id);
 }
-
