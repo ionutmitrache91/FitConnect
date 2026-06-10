@@ -1,24 +1,41 @@
 import { Routes, Route } from 'react-router-dom';
-
-function HomePage() {
-  return (
-    <main className="app-shell">
-      <section className="hero">
-        <div>
-          <p className="eyebrow">Fitness meetups made simple</p>
-          <h1>FitConnect</h1>
-          <p>Find local runs, yoga sessions, hikes, rides, and wellness events in one place.</p>
-        </div>
-      </section>
-    </main>
-  );
-}
+import Navbar from './components/Navbar.jsx';
+import ProtectedRoute from './components/ProtectedRoute.jsx';
+import { AuthProvider } from './context/AuthContext.jsx';
+import DashboardPage from './pages/DashboardPage.jsx';
+import HomePage from './pages/HomePage.jsx';
+import LoginPage from './pages/LoginPage.jsx';
+import ProfilePage from './pages/ProfilePage.jsx';
+import RegisterPage from './pages/RegisterPage.jsx';
 
 export default function App() {
   return (
-    <Routes>
-      <Route path="*" element={<HomePage />} />
-    </Routes>
+    <AuthProvider>
+      <div className="app-shell">
+        <Navbar />
+        <Routes>
+          <Route path="/" element={<HomePage />} />
+          <Route path="/register" element={<RegisterPage />} />
+          <Route path="/login" element={<LoginPage />} />
+          <Route
+            path="/dashboard"
+            element={
+              <ProtectedRoute>
+                <DashboardPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/profile"
+            element={
+              <ProtectedRoute>
+                <ProfilePage />
+              </ProtectedRoute>
+            }
+          />
+          <Route path="*" element={<HomePage />} />
+        </Routes>
+      </div>
+    </AuthProvider>
   );
 }
-

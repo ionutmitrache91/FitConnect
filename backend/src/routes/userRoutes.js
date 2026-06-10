@@ -1,10 +1,10 @@
 import { Router } from 'express';
+import { getProfile } from '../controllers/userController.js';
+import { asyncHandler } from '../middleware/asyncHandler.js';
+import { requireAuth } from '../middleware/auth.js';
 
 const router = Router();
 
-router.get('/me', (_req, res) => {
-  res.status(501).json({ message: 'Profile is not implemented yet.' });
-});
+router.get('/me', requireAuth, asyncHandler(getProfile));
 
 export default router;
-

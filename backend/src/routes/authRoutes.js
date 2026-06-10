@@ -1,14 +1,10 @@
 import { Router } from 'express';
+import { login, register } from '../controllers/authController.js';
+import { asyncHandler } from '../middleware/asyncHandler.js';
 
 const router = Router();
 
-router.post('/register', (_req, res) => {
-  res.status(501).json({ message: 'Registration is not implemented yet.' });
-});
-
-router.post('/login', (_req, res) => {
-  res.status(501).json({ message: 'Login is not implemented yet.' });
-});
+router.post('/register', asyncHandler(register));
+router.post('/login', asyncHandler(login));
 
 export default router;
-
